@@ -1,11 +1,9 @@
 import db from '../db.js';
 import bcrypt from 'bcrypt';
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-import { session } from 'passport';
 
 
 const saltRounds = 10;
+
 
 // User registration function
 async function registerUser(username, password) {
@@ -20,3 +18,22 @@ async function registerUser(username, password) {
         throw error; // Rethrow the error for handling in the calling function
     }
 }
+
+// User login function
+async function loginUser(username, password) {
+    const query = 'SELECT * FROM users WHERE username = $1';
+    const values = [username];
+    try {
+        const result = await db.query(query, values);
+        const user = result.rows[0];
+        if (user && await bcrypt.compare(password, user.password)) {
+            return user; // Return the authenticated user
+        } else {
+            throw new Error('Invalid username or password');
+        }
+    }   catch (error) { 
+        console.error('Error logging in user:', error);
+        throw error; // Rethrow the error for handling in the calling function
+    }
+}
+
