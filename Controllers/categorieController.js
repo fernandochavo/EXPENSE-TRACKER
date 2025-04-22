@@ -43,3 +43,5 @@ async function getCategoryById(req, res) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
+export {getAllCategories, createCategory, getCategoryById};
