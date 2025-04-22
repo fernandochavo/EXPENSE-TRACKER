@@ -18,23 +18,19 @@ async function registerUser(username, password) {
     }
 }
 
-// User login function
-async function loginUser(username, password) {
+// User find user
+async function findUser(username) {
     const query = 'SELECT * FROM users WHERE username = $1';
     const values = [username];
     try {
         const result = await db.query(query, values);
-        const user = result.rows[0];
-        if (user && await bcrypt.compare(password, user.password)) {
-            return user; // Return the authenticated user
-        } else {
-            throw new Error('Invalid username or password');
-        }
-    }   catch (error) { 
-        console.error('Error logging in user:', error);
+        return result.rows[0]; // Return the found user
+    } catch (error) {
+        console.error('Error finding user:', error);
         throw error; // Rethrow the error for handling in the calling function
     }
 }
+
 
 async function deleteUser(userId) {
     const query = 'DELETE FROM users WHERE id = $1 RETURNING *';
@@ -59,4 +55,4 @@ async function getAllUsers() {
     }
 }
 
-export { registerUser, loginUser, deleteUser, getAllUsers };
+export { registerUser, deleteUser, getAllUsers, findUser };
