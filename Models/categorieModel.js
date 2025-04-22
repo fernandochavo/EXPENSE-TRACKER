@@ -39,3 +39,5 @@ async function getCategoryById(categoryId) {
         throw error; // Rethrow the error for handling in the calling function
     }
 }
+
+export { createCategory, getAllCategories, getCategoryById };

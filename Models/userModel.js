@@ -59,3 +59,4 @@ async function getAllUsers() {
     }
 }
 
+export { registerUser, loginUser, deleteUser, getAllUsers };
