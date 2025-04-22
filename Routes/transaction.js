@@ -3,5 +3,12 @@ import{ createTransactionController, getAllTransactionsController } from '../Con
 
 const router = express.Router();
 
-router.post('/transactions', createTransactionController);
-router.get('/transactions', getAllTransactionsController);
+function isLoggedIn(req, res, next) {
+  if (req.session.userId) return next();
+  res.redirect("/login");
+}
+
+router.post('/transactions', isLoggedIn, createTransactionController);
+router.get('/transactions', isLoggedIn, getAllTransactionsController);
+
+export default router;

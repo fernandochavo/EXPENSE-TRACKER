@@ -3,10 +3,18 @@ import {
   createCategory,
   getAllCategories,
   getCategoryById,
-} from '../Controllers/categoryController.js';
+} from '../Controllers/categorieController.js';
+import e from 'express';
 
 const router = express.Router();
 
-router.post('/', createCategory); // Create a new category
-router.get('/', getAllCategories); // Get all categories
-router.get('/:id', getCategoryById); // Get a category by ID
+function isLoggedIn(req, res, next) {
+  if (req.session.userId) return next();
+  res.redirect("/login");
+}
+
+router.post('/', isLoggedIn, createCategory); // Create a new category
+router.get('/',  isLoggedIn, getAllCategories); // Get all categories
+router.get('/:id', isLoggedIn, getCategoryById); // Get a category by ID
+
+export default router;
